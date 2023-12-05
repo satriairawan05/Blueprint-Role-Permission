@@ -203,11 +203,12 @@ class AccountController extends Controller
     {
         $dataUser = $user->find(request()->segment(2));
         $dataPermission = $permission->find(request()->segment(4));
+
         if ($dataUser->hasPermissionTo($dataPermission)) {
             $dataUser->revokePermissionTo($dataPermission);
-
             return redirect()->back()->with('success', 'Permission Revoke!');
         }
+
         return redirect()->back()->with('failed', 'Permission not Exists!');
     }
 }
