@@ -72,7 +72,7 @@
             </form>
         </div>
     </div>
-    <div class="card mt-3 mb-5">
+    <div class="card mb-5 mt-3">
         <div class="card-header">Permission</div>
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-baseline">
@@ -89,18 +89,42 @@
             <form action="{{ route('user.permission', $user->id) }}" method="post">
                 @csrf
                 <div class="mb-3">
-                    <label for="permission" class="form-label">Permission</label>
-                    <select class="form-select" name="permission" aria-label="Default select example">
-                        @foreach ($permission as $p)
-                            <option value="{{ $p->name }}" {{ old('permission') == $p->name ? 'selected' : '' }}>
-                                {{ $p->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Permission</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($permission_distinct as $d)
+                                @php
+                                    if ($user->permission != null) {
+                                        foreach ($user->permission as $user_permission) {
+                                            if ($user_permission != null) {
+                                                $name = $user_permission->name;
+                                            }
+                                        }
+                                    } else {
+                                        $name = ''; // Atur $name menjadi nilai default jika $user->permission null atau kosong
+                                    }
+                                @endphp
+                                <tr>
+                                    <td>{{ $d }}</td>
+                                    <td>
+                                        @foreach ($permission as $p)
+                                            <input type="checkbox" name="{{ $d . '.' . str_replace('user.', '', $p->name) }}"
+                                                id="{{ $p->name . '.' . $p->id }}" class="form-check-input"
+                                                {{ $p->page == $name ? 'checked' : '' }}>
+                                            {{ str_replace('user.', '', $p->name) }}
+                                        @endforeach
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-sm btn-success ms-2">Assign</button>
-                </div>
+                <button type="submit" class="btn btn-sm btn-success ms-2">Assign</button>
             </form>
         </div>
     </div>

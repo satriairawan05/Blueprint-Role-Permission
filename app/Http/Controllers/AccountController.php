@@ -85,7 +85,8 @@ class AccountController extends Controller
             return view('admin.account.role', [
                 'user' => $user,
                 'role' => Role::get(),
-                'permission' => Permission::get()
+                'permission' => Permission::get(),
+                'permission_distinct' => Permission::distinct()->pluck('page')
             ]);
         } catch (QueryException $e) {
             return redirect()->back()->with('failed', $e->getMessage());
@@ -187,6 +188,7 @@ class AccountController extends Controller
      */
     public function permission(Request $request, User $user)
     {
+        dd($request->all());
         $dataUser = $user->find(request()->segment(2));
         if ($dataUser->hasPermissionTo($request->input('permission'))) {
             return redirect()->back()->with('failed', 'Permission Exists!');

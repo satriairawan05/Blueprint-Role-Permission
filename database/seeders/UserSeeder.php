@@ -46,18 +46,39 @@ class UserSeeder extends Seeder
         ]);
         $roleUser = Role::create(['name' => 'user', 'guard_name' => $guard]);
 
-        $readDashboard = Permission::create(['name' => 'read dashboard']);
+        $createUser = Permission::create(['page' => 'user', 'name' => 'user.create']);
+        $readUser = Permission::create(['page' => 'user', 'name' => 'user.read']);
+        $updateUser = Permission::create(['page' => 'user', 'name' => 'user.update']);
+        $deleteUser = Permission::create(['page' => 'user', 'name' => 'user.delete']);
 
         $admin->assignRole(['admin']);
-        $admin->givePermissionTo($readDashboard);
-        $roleAdmin->syncPermissions($readDashboard);
+        $admin->givePermissionTo($createUser);
+        $admin->givePermissionTo($readUser);
+        $admin->givePermissionTo($updateUser);
+        $admin->givePermissionTo($deleteUser);
+        $roleAdmin->syncPermissions($createUser);
+        $roleAdmin->syncPermissions($readUser);
+        $roleAdmin->syncPermissions($updateUser);
+        $roleAdmin->syncPermissions($deleteUser);
 
         $direksi->assignRole(['direksi']);
-        $direksi->givePermissionTo($readDashboard);
-        $roleDireksi->syncPermissions($readDashboard);
+        $direksi->givePermissionTo($createUser);
+        $direksi->givePermissionTo($readUser);
+        $direksi->givePermissionTo($updateUser);
+        $direksi->givePermissionTo($deleteUser);
+        $roleDireksi->syncPermissions($createUser);
+        $roleDireksi->syncPermissions($readUser);
+        $roleDireksi->syncPermissions($updateUser);
+        $roleDireksi->syncPermissions($deleteUser);
 
         $user->assignRole(['user']);
-        $user->givePermissionTo($readDashboard);
-        $roleUser->syncPermissions($readDashboard);
+        $user->givePermissionTo($createUser);
+        $user->givePermissionTo($readUser);
+        $user->givePermissionTo($updateUser);
+        $user->givePermissionTo($deleteUser);
+        $roleUser->syncPermissions($createUser);
+        $roleUser->syncPermissions($readUser);
+        $roleUser->syncPermissions($updateUser);
+        $roleUser->syncPermissions($deleteUser);
     }
 }
