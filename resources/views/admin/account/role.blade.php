@@ -115,7 +115,7 @@
                                         @foreach ($permission as $p)
                                             <input type="checkbox" name="{{ $d . '.' . str_replace('user.', '', $p->name) }}"
                                                 id="{{ $p->name . '.' . $p->id }}" class="form-check-input"
-                                                {{ $p->page == $name ? 'checked' : '' }}>
+                                                {{ $p->page == $d ? 'checked' : '' }}>
                                             {{ str_replace('user.', '', $p->name) }}
                                         @endforeach
                                     </td>

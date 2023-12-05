@@ -18,6 +18,8 @@
                 </li>
             </ul>
 
+            <hr class="my-1">
+
             <h6
                 class="sidebar-heading d-flex justify-content-between align-items-center text-body-secondary text-uppercase mb-1 mt-4 px-3">
                 <span>Setting</span>
@@ -43,7 +45,7 @@
                 </li>
             </ul>
 
-            <hr class="my-3">
+            <hr class="my-1">
 
             <ul class="nav flex-column mb-auto">
                 <li class="nav-item">
@@ -58,6 +60,8 @@
                 </form>
                 </li>
             </ul>
+
+            <hr class="my-1">
         </div>
     </div>
 </div>

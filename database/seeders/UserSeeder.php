@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
         ]);
-        $roleUser = Role::create(['name' => 'user', 'guard_name' => $guard]);
+        $roleUser = Role::create(['name' => 'staff', 'guard_name' => $guard]);
 
         $createUser = Permission::create(['page' => 'user', 'name' => 'user.create']);
         $readUser = Permission::create(['page' => 'user', 'name' => 'user.read']);

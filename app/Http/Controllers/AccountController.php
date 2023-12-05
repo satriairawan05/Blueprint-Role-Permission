@@ -27,7 +27,7 @@ class AccountController extends Controller
         try {
             return view('admin.account.index', [
                 'name' => $this->name,
-                'user' => User::all()
+                'user' => User::where('id',auth()->user()->id)->get()
             ]);
         } catch (QueryException $e) {
             return redirect()->back()->with('failed', $e->getMessage());
@@ -188,13 +188,25 @@ class AccountController extends Controller
      */
     public function permission(Request $request, User $user)
     {
-        dd($request->all());
+        $permissions = Permission::all();
+        $permissionAccess = [];
+
         $dataUser = $user->find(request()->segment(2));
-        if ($dataUser->hasPermissionTo($request->input('permission'))) {
-            return redirect()->back()->with('failed', 'Permission Exists!');
+
+        foreach ($permissions as $permission) {
+            $permissionAccess[$permission->id] = $request->has($permission->id) ? 1 : 0;
         }
 
-        $dataUser->givePermissionTo($request->input('permission'));
+        foreach ($permissionAccess as $permissionId => $access) {
+            $permission = Permission::find($permissionId);
+
+            if ($permission && $access == 1) {
+                if (!$dataUser->hasPermissionTo($permission->name)) {
+                    $dataUser->givePermissionTo($permission);
+                }
+            }
+        }
+
         return redirect()->back()->with('success', 'Given Permission!');
     }
 
