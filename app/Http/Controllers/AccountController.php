@@ -190,25 +190,17 @@ class AccountController extends Controller
     {
         $dataUser = $user->find(request()->segment(2));
         $permissions = Permission::all();
-        $reqPermissions = [];
+        $inputChecked = [];
 
-        foreach ($user->permissions as $user_permission) {
-            foreach ($permissions as $perm) {
-                $permissionName = in_array($request->input($perm->id) == "on" ? $perm->name : '', $user_permission->pluck('name')->toArray());
-                dd($permissionName);
-                if ($permissionName) {
-                    $reqPermissions[] = $permissionName;
+        foreach ($permissions as $perm) {
+            $inputChecked[] = $request->input($perm->id) == "on" ? $perm->name : '';
+
+            foreach($inputChecked as $input){
+                if ($input == $perm->name) {
+                    $dataUser->givePermissionTo($perm->name);
+                } else {
+                    $dataUser->revokePermissionTo($perm->name);
                 }
-            }
-        }
-
-        foreach ($reqPermissions as $reqPermission) {
-            if ($dataUser->hasDirectPermission($reqPermission)) {
-                $dataUser->revokePermissionTo($perm->id);
-            }
-
-            if (!$dataUser->hasDirectPermission($reqPermission)) {
-                $dataUser->givePermissionTo($reqPermission);
             }
         }
 
