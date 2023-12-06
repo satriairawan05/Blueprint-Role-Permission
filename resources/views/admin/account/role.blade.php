@@ -98,33 +98,28 @@
                         </thead>
                         <tbody>
                             @foreach ($permission_distinct as $d)
-                                @php
-                                    if ($user->permission != null) {
-                                        foreach ($user->permission as $user_permission) {
-                                            if ($user_permission != null) {
-                                                $name = $user_permission->name;
-                                            }
-                                        }
-                                    } else {
-                                        $name = ''; // Atur $name menjadi nilai default jika $user->permission null atau kosong
-                                    }
-                                @endphp
                                 <tr>
                                     <td>{{ $d }}</td>
                                     <td>
                                         @foreach ($permission as $p)
-                                            <input type="checkbox" name="{{ $d . '.' . str_replace('user.', '', $p->name) }}"
+                                            @php
+                                                $isChecked = in_array($p->name, $user->permissions->pluck('name')->toArray()) ? 'checked' : '';
+                                            @endphp
+                                            <input type="checkbox" name="{{ $p->id }}"
                                                 id="{{ $p->name . '.' . $p->id }}" class="form-check-input"
-                                                {{ $p->page == $d ? 'checked' : '' }}>
+                                                {{ $isChecked }}>
                                             {{ str_replace('user.', '', $p->name) }}
                                         @endforeach
                                     </td>
                                 </tr>
                             @endforeach
+
                         </tbody>
                     </table>
                 </div>
-                <button type="submit" class="btn btn-sm btn-success ms-2">Assign</button>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-sm btn-success ms-2">Assign</button>
+                </div>
             </form>
         </div>
     </div>

@@ -27,7 +27,7 @@ class AccountController extends Controller
         try {
             return view('admin.account.index', [
                 'name' => $this->name,
-                'user' => User::where('id',auth()->user()->id)->get()
+                'user' => User::where('id', auth()->user()->id)->get()
             ]);
         } catch (QueryException $e) {
             return redirect()->back()->with('failed', $e->getMessage());
@@ -188,22 +188,27 @@ class AccountController extends Controller
      */
     public function permission(Request $request, User $user)
     {
-        $permissions = Permission::all();
-        $permissionAccess = [];
-
         $dataUser = $user->find(request()->segment(2));
+        $permissions = Permission::all();
+        $reqPermissions = [];
 
-        foreach ($permissions as $permission) {
-            $permissionAccess[$permission->id] = $request->has($permission->id) ? 1 : 0;
+        foreach ($user->permissions as $user_permission) {
+            foreach ($permissions as $perm) {
+                $permissionName = in_array($request->input($perm->id) == "on" ? $perm->name : '', $user_permission->pluck('name')->toArray());
+                dd($permissionName);
+                if ($permissionName) {
+                    $reqPermissions[] = $permissionName;
+                }
+            }
         }
 
-        foreach ($permissionAccess as $permissionId => $access) {
-            $permission = Permission::find($permissionId);
+        foreach ($reqPermissions as $reqPermission) {
+            if ($dataUser->hasDirectPermission($reqPermission)) {
+                $dataUser->revokePermissionTo($perm->id);
+            }
 
-            if ($permission && $access == 1) {
-                if (!$dataUser->hasPermissionTo($permission->name)) {
-                    $dataUser->givePermissionTo($permission);
-                }
+            if (!$dataUser->hasDirectPermission($reqPermission)) {
+                $dataUser->givePermissionTo($reqPermission);
             }
         }
 

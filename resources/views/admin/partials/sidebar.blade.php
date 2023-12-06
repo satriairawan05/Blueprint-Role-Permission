@@ -9,10 +9,9 @@
         <div class="offcanvas-body d-md-flex flex-column pt-lg-3 overflow-y-auto p-0">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center active gap-2" aria-current="page" href="{{ route('home') }}">
-                        <svg class="bi">
-                            <use xlink:href="#house-fill" />
-                        </svg>
+                    <a class="nav-link d-flex align-items-center active gap-2" aria-current="page"
+                        href="{{ route('home') }}">
+                        <i class="bi bi-house-fill"></i>
                         Dashboard
                     </a>
                 </li>
@@ -49,15 +48,13 @@
 
             <ul class="nav flex-column mb-auto">
                 <li class="nav-item">
-                <form action="{{ route('logout') }}" method="post">
-                @csrf
-                    <button type="submit" class="nav-link d-flex align-items-center gap-2">
-                        <svg class="bi">
-                            <use xlink:href="#door-closed" />
-                        </svg>
-                        Sign out
-                    </button>
-                </form>
+                    <form action="{{ route('logout') }}" method="post">
+                        @csrf
+                        <button type="submit" class="nav-link d-flex align-items-center gap-2">
+                            <i class="bi bi-door-closed"></i>
+                            Sign out
+                        </button>
+                    </form>
                 </li>
             </ul>
 
