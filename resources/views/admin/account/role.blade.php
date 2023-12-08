@@ -76,15 +76,33 @@
         <div class="card-header">Permission</div>
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-baseline">
-                @foreach ($user->permissions as $user_permission)
-                    <form
-                        action="{{ route('user.permission.destroy', ['user' => $user->id, 'permission' => $user_permission->id]) }}"
-                        method="post">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn btn-sm btn-danger">{{ $user_permission->name }}</button>
-                    </form>
-                @endforeach
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Permission</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($permission_distinct as $d)
+                            <tr>
+                                <td>{{ $d }}</td>
+                                <td class="form-check-inline">
+                                    @foreach ($user->permissions as $user_permission)
+                                        <form
+                                            action="{{ route('user.permission.destroy', ['user' => $user->id, 'permission' => $user_permission->id]) }}"
+                                            method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit"
+                                                class="btn btn-sm btn-danger">{{ str_replace('user.', '', $user_permission->name) }}</button>
+                                        </form>
+                                    @endforeach
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
             <form action="{{ route('user.permission', $user->id) }}" method="post">
                 @csrf
